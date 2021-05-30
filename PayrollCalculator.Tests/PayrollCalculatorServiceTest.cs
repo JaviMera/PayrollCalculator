@@ -62,5 +62,18 @@ namespace PayrollCalculator.Tests
             Assert.IsNotNull(previewCosts);
             Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
         }
+
+        [Test]
+        public void CalculateEmployeeCosts_EmployeeWithNoDependents_EmployeeNameStartsWithLetterA()
+        {
+            var employee = new Employee { Name = "Albert" };
+            var nameDiscount = .10;
+            var previewCosts = _service.CalculateEmployeeCosts(employee);
+            
+            var benefitDeduction = Math.Round((employeeBenefitCost - (employeeBenefitCost * nameDiscount))/ paychecksPerYear, 2);
+
+            Assert.IsNotNull(previewCosts);
+            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+        }
     }
 }
