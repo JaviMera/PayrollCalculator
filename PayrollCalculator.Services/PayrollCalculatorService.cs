@@ -19,8 +19,8 @@ namespace PayrollCalculator.Services
                 return new CostPreview
                 {
                     CostPerPaycheck = employee.Name.StartsWith('A')
-                        ? Math.Round((benefitCostPerYear - (benefitCostPerYear * benefitDiscount)) / paychecksPerYear, 2)
-                        : Math.Round(benefitCostPerYear / paychecksPerYear, 2)
+                        ? CalculateCost(benefitCostPerYear - (benefitCostPerYear * benefitDiscount))
+                        : CalculateCost(benefitCostPerYear)
                 };
             }
 
@@ -28,8 +28,13 @@ namespace PayrollCalculator.Services
 
             return new CostPreview
             {
-                CostPerPaycheck = Math.Round((benefitCostPerYear + dependentCost) / paychecksPerYear, 2)
+                CostPerPaycheck = CalculateCost(benefitCostPerYear + dependentCost)
             };
+        }
+
+        private double CalculateCost(double cost)
+        {
+            return Math.Round(cost / paychecksPerYear, 2);
         }
     }
 }
