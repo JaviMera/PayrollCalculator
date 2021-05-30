@@ -2,6 +2,7 @@ using NUnit.Framework;
 using PayrollCalculator.Services;
 using PayrollCalculator.Services.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace PayrollCalculator.Tests
@@ -42,6 +43,21 @@ namespace PayrollCalculator.Tests
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             var benefitDeduction = Math.Round((employeeBenefitCost + dependentBenefitCost) / paychecksPerYear, 2);
+
+            Assert.IsNotNull(previewCosts);
+            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+        }
+
+        [Test]
+        public void CalculateEmployeeCosts_EmployeeWithTwoDependents()
+        {
+            var employee = new Employee { Dependents = new List<Dependent> { new Dependent(), new Dependent() } };
+
+            var previewCosts = _service.CalculateEmployeeCosts(employee);
+
+            double dependentFinalCost = employee.Dependents.Count() * dependentBenefitCost;
+
+            var benefitDeduction = Math.Round((employeeBenefitCost + dependentFinalCost) / paychecksPerYear, 2);
 
             Assert.IsNotNull(previewCosts);
             Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);

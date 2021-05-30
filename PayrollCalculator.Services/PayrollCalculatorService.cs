@@ -20,9 +20,11 @@ namespace PayrollCalculator.Services
                 };
             }
 
+            var dependentCost = dependentCostPerYear * employee.Dependents.Count();
+
             return new CostPreview
             {
-                CostPerPaycheck = Math.Round((benefitCostPerYear + dependentCostPerYear) / paychecksPerYear, 2)
+                CostPerPaycheck = Math.Round((benefitCostPerYear + dependentCost) / paychecksPerYear, 2)
             };
         }
     }
