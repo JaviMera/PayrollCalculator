@@ -8,6 +8,7 @@ namespace PayrollCalculator.Services
     {
         private const int paychecksPerYear = 26;
         private const double benefitCostPerYear = 1000;
+        private const double dependentCostPerYear = 500;
 
         public CostPreview CalculateEmployeeCosts(Employee employee)
         {
@@ -19,7 +20,10 @@ namespace PayrollCalculator.Services
                 };
             }
 
-            return new CostPreview();
+            return new CostPreview
+            {
+                CostPerPaycheck = Math.Round((benefitCostPerYear + dependentCostPerYear) / paychecksPerYear, 2)
+            };
         }
     }
 }
