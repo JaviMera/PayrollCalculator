@@ -103,6 +103,52 @@ namespace PayrollCalculator.Tests
 
             Assert.IsNotNull(previewCosts);
             Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+        }        
+
+        [Test]
+        public void CalculateEmployeeCosts_EmployeeWithTwoDependents_EmployeeAndOneDependentNameStartsWithLetterA()
+        {
+            var employee = new Employee
+            {
+                Name = "Albert",
+                Dependents = new List<Dependent> {
+                    new Dependent { Name = "Astrid" },
+                    new Dependent { Name = "Charles" }
+                }
+            };
+
+            var nameDiscount = .10;
+
+            var employeeDeduction = employeeBenefitCost - (employeeBenefitCost * nameDiscount);
+            var dependentDeduction = dependentBenefitCost + (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
+            var benefitDeduction = Math.Round((employeeDeduction + dependentDeduction) / paychecksPerYear, 2);
+            var previewCosts = _service.CalculateEmployeeCosts(employee);
+
+            Assert.IsNotNull(previewCosts);
+            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+        }
+
+        [Test]
+        public void CalculateEmployeeCosts_EmployeeWithTwoDependents_OnlyDependentsNameStartsWithLetterA()
+        {
+            var employee = new Employee
+            {
+                Name = "Mario",
+                Dependents = new List<Dependent> {
+                    new Dependent { Name = "Astrid" },
+                    new Dependent { Name = "Alicia" }
+                }
+            };
+
+            var nameDiscount = .10;
+
+            var employeeDeduction = employeeBenefitCost;
+            var dependentDeduction = employee.Dependents.Count() * (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
+            var benefitDeduction = Math.Round((employeeDeduction + dependentDeduction) / paychecksPerYear, 2);
+            var previewCosts = _service.CalculateEmployeeCosts(employee);
+
+            Assert.IsNotNull(previewCosts);
+            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
         }
     }
 }
