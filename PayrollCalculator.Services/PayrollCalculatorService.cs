@@ -24,6 +24,10 @@ namespace PayrollCalculator.Services
                 };
             }
 
+            var employeeFinalCost = employee.Name.StartsWith('A')
+                ? benefitCostPerYear - (benefitCostPerYear * benefitDiscount)
+                : benefitCostPerYear;
+
             var dependentFinalCost = 0.0;
 
             foreach(var dependent in employee.Dependents)
@@ -35,7 +39,7 @@ namespace PayrollCalculator.Services
 
             return new CostPreview
             {
-                CostPerPaycheck = CalculateCost(benefitCostPerYear + dependentFinalCost)
+                CostPerPaycheck = CalculateCost(employeeFinalCost + dependentFinalCost)
             };
         }
 
