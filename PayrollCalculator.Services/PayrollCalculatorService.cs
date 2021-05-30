@@ -7,9 +7,9 @@ namespace PayrollCalculator.Services
     public sealed class PayrollCalculatorService : IPayrollCalculatorService
     {
         private const int paychecksPerYear = 26;
-        private const double benefitCostPerYear = 1000;
-        private const double dependentCostPerYear = 500;
-        private const double benefitDiscount = .10;
+        private const double employeeBenefitCostPerYear = 1000;
+        private const double dependentBenefitCostPerYear = 500;
+        private const double nameBenefitDiscount = .10;
 
         public CostPreview CalculateEmployeeCosts(Employee employee)
         {
@@ -18,29 +18,34 @@ namespace PayrollCalculator.Services
 
                 return new CostPreview
                 {
-                    CostPerPaycheck = employee.Name.StartsWith('A')
-                        ? CalculateCost(benefitCostPerYear - (benefitCostPerYear * benefitDiscount))
-                        : CalculateCost(benefitCostPerYear)
+                    CostPerPaycheck = NameStartsWithLetterA(employee.Name)
+                        ? CalculateCost(employeeBenefitCostPerYear - (employeeBenefitCostPerYear * nameBenefitDiscount))
+                        : CalculateCost(employeeBenefitCostPerYear)
                 };
             }
 
-            var employeeFinalCost = employee.Name.StartsWith('A')
-                ? benefitCostPerYear - (benefitCostPerYear * benefitDiscount)
-                : benefitCostPerYear;
+            var employeeFinalCost = NameStartsWithLetterA(employee.Name)
+                ? employeeBenefitCostPerYear - (employeeBenefitCostPerYear * nameBenefitDiscount)
+                : employeeBenefitCostPerYear;
 
             var dependentFinalCost = 0.0;
 
             foreach(var dependent in employee.Dependents)
             {
-                dependentFinalCost += dependent.Name.StartsWith('A') 
-                    ? (dependentCostPerYear - (dependentCostPerYear * .10)) 
-                    : dependentCostPerYear;
+                dependentFinalCost += NameStartsWithLetterA(dependent.Name)
+                    ? (dependentBenefitCostPerYear - (dependentBenefitCostPerYear * .10))
+                    : dependentBenefitCostPerYear;
             }
 
             return new CostPreview
             {
                 CostPerPaycheck = CalculateCost(employeeFinalCost + dependentFinalCost)
             };
+        }
+
+        private static bool NameStartsWithLetterA(string name)
+        {
+            return name.StartsWith('A');
         }
 
         private double CalculateCost(double cost)
