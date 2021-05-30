@@ -9,6 +9,10 @@ namespace PayrollCalculator.Tests
     [TestFixture]
     public class PayrollCalculatorServiceTest
     {
+        private const double employeeBenefitCost = 1000;
+        private const double dependentBenefitCost = 500;
+        private const int paychecksPerYear = 26;
+        
         private PayrollCalculatorService _service;
 
         [SetUp]
@@ -21,29 +25,23 @@ namespace PayrollCalculator.Tests
         public void CalculateEmployeeCosts_EmployeeWithNoDependents()
         {
             var employee = new Employee();
-            decimal benefitCost = 1000;
-            int yearlyPaychecks = 26;
-
+            
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
-            var benefitDeduction = Math.Round(benefitCost / yearlyPaychecks, 2);
+            var benefitDeduction = Math.Round(employeeBenefitCost / paychecksPerYear, 2);
 
             Assert.IsNotNull(previewCosts);
             Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
         }
 
         [Test]
-        public void CalculateEmployeeCosts_EmployeeWithOneDependent()
+        public void CalculateEmployeeCosts_EmployeeWithOneDependents()
         {
             var employee = new Employee { Dependents = new List<Dependent> { new Dependent() } };
 
-            decimal benefitCost = 1000;
-            decimal dependentCost = 500;
-            int yearlyPaychecks = 26;
-
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
-            var benefitDeduction = Math.Round((benefitCost + dependentCost) / yearlyPaychecks, 2);
+            var benefitDeduction = Math.Round((employeeBenefitCost + dependentBenefitCost) / paychecksPerYear, 2);
 
             Assert.IsNotNull(previewCosts);
             Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
