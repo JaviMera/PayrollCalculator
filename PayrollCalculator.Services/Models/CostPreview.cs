@@ -2,5 +2,6 @@
 {
     public sealed class CostPreview
     {
+        public double CostPerPaycheck { get; set; }
     }
 }
