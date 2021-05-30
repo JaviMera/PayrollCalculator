@@ -24,11 +24,18 @@ namespace PayrollCalculator.Services
                 };
             }
 
-            var dependentCost = dependentCostPerYear * employee.Dependents.Count();
+            var dependentFinalCost = 0.0;
+
+            foreach(var dependent in employee.Dependents)
+            {
+                dependentFinalCost += dependent.Name.StartsWith('A') 
+                    ? (dependentCostPerYear - (dependentCostPerYear * .10)) 
+                    : dependentCostPerYear;
+            }
 
             return new CostPreview
             {
-                CostPerPaycheck = CalculateCost(benefitCostPerYear + dependentCost)
+                CostPerPaycheck = CalculateCost(benefitCostPerYear + dependentFinalCost)
             };
         }
 
