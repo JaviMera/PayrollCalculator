@@ -33,5 +33,10 @@ namespace PayrollCalculator.Web.Pages
 
             return Page();
         }        
+
+        public IActionResult OnPostBackTo()
+        {
+            return RedirectToPage("/Index", new { employee = string.Empty });
+        }
     }
 }

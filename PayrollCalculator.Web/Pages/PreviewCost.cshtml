@@ -20,12 +20,16 @@
                 <div class="controls">
                     <label asp-for="Preview.DependentCost">Dependent Cost: @Model.Preview.DependentCost</label>
                 </div>
-            </div>            
+            </div>
             <div class="control-group form-group">
                 <div class="controls">
                     <label asp-for="Preview.TotalCost">Final Cost: @Model.Preview.TotalCost</label>
                 </div>
             </div>
         </div>
+        <br />
     </div>
+    <form asp-page="PreviewCost" method="post">
+        <button class="btn btn-dark" asp-page-handler="BackTo">Back</button>
+    </form>    
 </div>    
