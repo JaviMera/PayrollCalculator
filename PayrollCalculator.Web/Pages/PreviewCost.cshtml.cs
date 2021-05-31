@@ -27,7 +27,9 @@ namespace PayrollCalculator.Web.Pages
             var p = _payrollCalculatorService.CalculateEmployeeCosts(e);
 
             Preview.EmployeeName = e.Name;
-            Preview.FinalCost = p.CostPerPaycheck;
+            Preview.EmployeeCost = p.EmployeeCost;
+            Preview.DependentCost = p.DependentCost;
+            Preview.TotalCost = p.TotalCost;
 
             return Page();
         }        

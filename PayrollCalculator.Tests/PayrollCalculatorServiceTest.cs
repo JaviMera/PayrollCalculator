@@ -25,27 +25,31 @@ namespace PayrollCalculator.Tests
         [Test]
         public void CalculateEmployeeCosts_EmployeeWithNoDependents()
         {
-            var employee = new Employee();
-            
+            var employee = new Employee();            
+            var employeeCost = Math.Round(employeeBenefitCost / paychecksPerYear, 2);
+            var totalCost = employeeCost;
+
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
-            var benefitDeduction = Math.Round(employeeBenefitCost / paychecksPerYear, 2);
-
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
         public void CalculateEmployeeCosts_EmployeeWithOneDependents()
         {
             var employee = new Employee { Dependents = new List<Dependent> { new Dependent() } };
+            var employeeCost = Math.Round(employeeBenefitCost / paychecksPerYear, 2);
+            var dependentCost = Math.Round(dependentBenefitCost / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
 
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
-            var benefitDeduction = Math.Round((employeeBenefitCost + dependentBenefitCost) / paychecksPerYear, 2);
-
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
@@ -53,14 +57,18 @@ namespace PayrollCalculator.Tests
         {
             var employee = new Employee { Dependents = new List<Dependent> { new Dependent(), new Dependent() } };
 
-            var previewCosts = _service.CalculateEmployeeCosts(employee);
-
             double dependentFinalCost = employee.Dependents.Count() * dependentBenefitCost;
 
-            var benefitDeduction = Math.Round((employeeBenefitCost + dependentFinalCost) / paychecksPerYear, 2);
+            var employeeCost = Math.Round(employeeBenefitCost / paychecksPerYear, 2);
+            var dependentCost = Math.Round(dependentFinalCost / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
+
+            var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
@@ -68,12 +76,15 @@ namespace PayrollCalculator.Tests
         {
             var employee = new Employee { Name = "Albert" };
             var nameDiscount = .10;
+
+            var employeeCost = Math.Round((employeeBenefitCost - (employeeBenefitCost * nameDiscount)) / paychecksPerYear, 2);
+            var totalCost = employeeCost;
+
             var previewCosts = _service.CalculateEmployeeCosts(employee);
             
-            var benefitDeduction = Math.Round((employeeBenefitCost - (employeeBenefitCost * nameDiscount))/ paychecksPerYear, 2);
-
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
@@ -81,13 +92,16 @@ namespace PayrollCalculator.Tests
         {
             var employee = new Employee { Dependents = new List<Dependent> { new Dependent { Name = "Astrid" } } };
             var nameDiscount = .10;
-            
-            var dependentDeduction = (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
-            var benefitDeduction = Math.Round((employeeBenefitCost + dependentDeduction) / paychecksPerYear, 2);
+
+            var employeeCost = Math.Round(employeeBenefitCost / paychecksPerYear, 2);            
+            var dependentCost = Math.Round((dependentBenefitCost - (dependentBenefitCost * nameDiscount)) / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
@@ -96,13 +110,19 @@ namespace PayrollCalculator.Tests
             var employee = new Employee { Name = "Albert", Dependents = new List<Dependent> { new Dependent { Name = "Astrid" } } };
             var nameDiscount = .10;
 
-            var employeeDeduction = employeeBenefitCost - (employeeBenefitCost * nameDiscount);
+            var employeeDeduction = employeeBenefitCost - (employeeBenefitCost * nameDiscount);            
             var dependentDeduction = (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
-            var benefitDeduction = Math.Round((employeeDeduction + dependentDeduction) / paychecksPerYear, 2);
+
+            var employeeCost = Math.Round(employeeDeduction / paychecksPerYear, 2);
+            var dependentCost = Math.Round(dependentDeduction / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
+
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }        
 
         [Test]
@@ -119,13 +139,16 @@ namespace PayrollCalculator.Tests
 
             var nameDiscount = .10;
 
-            var employeeDeduction = employeeBenefitCost - (employeeBenefitCost * nameDiscount);
-            var dependentDeduction = dependentBenefitCost + (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
-            var benefitDeduction = Math.Round((employeeDeduction + dependentDeduction) / paychecksPerYear, 2);
+            var employeeCost = Math.Round((employeeBenefitCost - (employeeBenefitCost * nameDiscount)) / paychecksPerYear, 2);
+            var dependentCost = Math.Round(dependentBenefitCost / paychecksPerYear, 2) + Math.Round((dependentBenefitCost - (dependentBenefitCost * nameDiscount)) / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
+
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
 
         [Test]
@@ -142,13 +165,16 @@ namespace PayrollCalculator.Tests
 
             var nameDiscount = .10;
 
-            var employeeDeduction = employeeBenefitCost;
-            var dependentDeduction = employee.Dependents.Count() * (dependentBenefitCost - (dependentBenefitCost * nameDiscount));
-            var benefitDeduction = Math.Round((employeeDeduction + dependentDeduction) / paychecksPerYear, 2);
+            var employeeCost = Math.Round(employeeBenefitCost / paychecksPerYear, 2); ;
+            var dependentCost = employee.Dependents.Count() * Math.Round((dependentBenefitCost - (dependentBenefitCost * nameDiscount)) / paychecksPerYear, 2);
+            var totalCost = employeeCost + dependentCost;
+
             var previewCosts = _service.CalculateEmployeeCosts(employee);
 
             Assert.IsNotNull(previewCosts);
-            Assert.AreEqual(benefitDeduction, previewCosts.CostPerPaycheck);
+            Assert.AreEqual(employeeCost, previewCosts.EmployeeCost);
+            Assert.AreEqual(dependentCost, previewCosts.DependentCost);
+            Assert.AreEqual(totalCost, previewCosts.TotalCost);
         }
     }
 }

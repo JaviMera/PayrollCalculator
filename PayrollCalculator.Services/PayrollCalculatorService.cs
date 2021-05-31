@@ -16,22 +16,28 @@ namespace PayrollCalculator.Services
         {
             if (!employee.Dependents.Any())
             {
-
+                double employeCost = GetEmployeeBenefitCost(employee);
                 return new CostPreview
                 {
-                    CostPerPaycheck = GetEmployeeBenefitCost(employee)
+                    EmployeeCost = employeCost,
+                    TotalCost = employeCost
                 };
             }
 
-            var employeeFinalCost = NameStartsWithLetterA(employee.Name)
+            var employeeCost = NameStartsWithLetterA(employee.Name)
                 ? employeeBenefitCostPerYear - (employeeBenefitCostPerYear * nameBenefitDiscount)
                 : employeeBenefitCostPerYear;
 
-            double dependentFinalCost = GetDependentsFinalCost(employee.Dependents);
+            double dependentCost = GetDependentsFinalCost(employee.Dependents);
+
+            double employeeFinalCost = CalculateCost(employeeCost);
+            double dependentFinalCost = CalculateCost(dependentCost);
 
             return new CostPreview
             {
-                CostPerPaycheck = CalculateCost(employeeFinalCost + dependentFinalCost)
+                EmployeeCost = employeeFinalCost,
+                DependentCost = dependentFinalCost,
+                TotalCost = employeeFinalCost + dependentFinalCost
             };
         }
 

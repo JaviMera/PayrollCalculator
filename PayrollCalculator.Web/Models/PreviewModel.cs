@@ -2,7 +2,9 @@
 {
     public sealed class PreviewModel
     {
-        public double FinalCost { get; set; }
         public string EmployeeName { get; set; }
+        public double EmployeeCost { get; set; }
+        public double DependentCost { get; set; }
+        public double TotalCost { get; set; }        
     }
 }
