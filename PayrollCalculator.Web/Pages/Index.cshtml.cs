@@ -11,27 +11,37 @@ namespace PayrollCalculator.Web.Pages
     public class IndexModel : PageModel
     {
         [BindProperty]
-        public EmployeeModel Employee { get; set; }
+        public EmployeeModel Employee { get; set; } = new EmployeeModel();
 
-        public IndexModel()
-        {     
+        public IActionResult OnGet(int dependents)
+        {
+            Employee = new EmployeeModel();
+            Employee.Dependents = new List<DependentModel>();
+
+            for (int i = 0; i < dependents; i++)
+            {
+                Employee.Dependents.Add(new DependentModel());
+            }
+
+            return Page();
         }
 
-        public void OnGet()
+        public IActionResult OnPostAdd()
         {
+            return RedirectToPage("/Index", new { dependents = Employee.Dependents.Count + 1 });
         }
 
         public IActionResult OnPost()
         {
             Employee employee = new Employee
             {
-                Name = Employee.Name,
-                Dependents = new List<Dependent> {
-                    new Dependent { Name = Employee.SpouseName},
-                    new Dependent { Name = Employee.ChildOne},
-                    new Dependent { Name = Employee.ChildTwo},
-                }
+                Name = Employee.Name
             };
+
+            foreach(var dependent in Employee.Dependents)
+            {
+                employee.Dependents.Add(new Dependent { Name = dependent.Name });
+            }
 
             return RedirectToPage("/PreviewCost", new { employee = JsonConvert.SerializeObject(employee) });
         }
