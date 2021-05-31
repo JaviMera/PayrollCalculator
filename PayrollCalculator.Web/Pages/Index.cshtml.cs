@@ -13,22 +13,18 @@ namespace PayrollCalculator.Web.Pages
         [BindProperty]
         public EmployeeModel Employee { get; set; } = new EmployeeModel();
 
-        public IActionResult OnGet(int dependents)
+        public IActionResult OnGet(string employee)
         {
-            Employee = new EmployeeModel();
-            Employee.Dependents = new List<DependentModel>();
-
-            for (int i = 0; i < dependents; i++)
-            {
-                Employee.Dependents.Add(new DependentModel());
-            }
+            if (!string.IsNullOrWhiteSpace(employee))
+                Employee = JsonConvert.DeserializeObject<EmployeeModel>(employee);
 
             return Page();
         }
 
         public IActionResult OnPostAdd()
         {
-            return RedirectToPage("/Index", new { dependents = Employee.Dependents.Count + 1 });
+            Employee.Dependents.Add(new DependentModel());
+            return RedirectToPage("/Index", new { employee = JsonConvert.SerializeObject(Employee)});
         }
 
         public IActionResult OnPost()
