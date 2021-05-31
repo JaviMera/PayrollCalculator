@@ -13,10 +13,10 @@ namespace PayrollCalculator.Web.Pages
         [BindProperty]
         public EmployeeModel Employee { get; set; } = new EmployeeModel();
 
-        public IActionResult OnGet(string employee)
+        public IActionResult OnGet(string employeeJson)
         {
-            if (!string.IsNullOrWhiteSpace(employee))
-                Employee = JsonConvert.DeserializeObject<EmployeeModel>(employee);
+            if (!string.IsNullOrWhiteSpace(employeeJson))
+                Employee = JsonConvert.DeserializeObject<EmployeeModel>(employeeJson);
 
             return Page();
         }
@@ -24,7 +24,7 @@ namespace PayrollCalculator.Web.Pages
         public IActionResult OnPostAdd()
         {
             Employee.Dependents.Add(new DependentModel());
-            return RedirectToPage("/Index", new { employee = JsonConvert.SerializeObject(Employee)});
+            return RedirectToPage("/Index", new { employeeJson = JsonConvert.SerializeObject(Employee)});
         }
 
         public IActionResult OnPost()
@@ -39,7 +39,7 @@ namespace PayrollCalculator.Web.Pages
                 employee.Dependents.Add(new Dependent { Name = dependent.Name });
             }
 
-            return RedirectToPage("/PreviewCost", new { employee = JsonConvert.SerializeObject(employee) });
+            return RedirectToPage("/PreviewCost", new { employeeJson = JsonConvert.SerializeObject(employee) });
         }
     }
 }

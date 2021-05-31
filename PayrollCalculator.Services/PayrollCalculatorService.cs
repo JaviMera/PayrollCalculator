@@ -12,12 +12,12 @@ namespace PayrollCalculator.Services
         private const double dependentBenefitCostPerYear = 500;
         private const double nameBenefitDiscount = .10;
 
-        public CostPreview CalculateEmployeeCosts(Employee employee)
+        public Preview CalculateEmployeeCosts(Employee employee)
         {
             if (!employee.Dependents.Any())
             {
                 double employeCost = GetEmployeeBenefitCost(employee);
-                return new CostPreview
+                return new Preview
                 {
                     EmployeeCost = employeCost,
                     TotalCost = employeCost
@@ -33,7 +33,7 @@ namespace PayrollCalculator.Services
             double employeeFinalCost = CalculateCost(employeeCost);
             double dependentFinalCost = CalculateCost(dependentCost);
 
-            return new CostPreview
+            return new Preview
             {
                 EmployeeCost = employeeFinalCost,
                 DependentCost = dependentFinalCost,

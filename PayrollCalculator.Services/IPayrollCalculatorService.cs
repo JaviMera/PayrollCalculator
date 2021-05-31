@@ -4,6 +4,6 @@ namespace PayrollCalculator.Services
 {
     public interface IPayrollCalculatorService
     {
-        CostPreview CalculateEmployeeCosts(Employee employee);
+        Preview CalculateEmployeeCosts(Employee employee);
     }
 }

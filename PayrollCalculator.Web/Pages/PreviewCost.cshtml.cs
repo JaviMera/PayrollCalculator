@@ -19,17 +19,17 @@ namespace PayrollCalculator.Web.Pages
             _payrollCalculatorService = payrollCalculatorService;
         }
 
-        public IActionResult OnGet(string employee)
+        public IActionResult OnGet(string employeeJson)
         {
             Preview = new PreviewModel();
 
-            var e = JsonConvert.DeserializeObject<Employee>(employee);            
-            var p = _payrollCalculatorService.CalculateEmployeeCosts(e);
+            var employee = JsonConvert.DeserializeObject<Employee>(employeeJson);            
+            var preview = _payrollCalculatorService.CalculateEmployeeCosts(employee);
 
-            Preview.EmployeeName = e.Name;
-            Preview.EmployeeCost = p.EmployeeCost;
-            Preview.DependentCost = p.DependentCost;
-            Preview.TotalCost = p.TotalCost;
+            Preview.EmployeeName = employee.Name;
+            Preview.EmployeeCost = preview.EmployeeCost;
+            Preview.DependentCost = preview.DependentCost;
+            Preview.TotalCost = preview.TotalCost;
 
             return Page();
         }        
