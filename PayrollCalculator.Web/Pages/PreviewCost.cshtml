@@ -13,17 +13,17 @@
             <br />
             <div class="control-group form-group">
                 <div class="controls">
-                    <label asp-for="Preview.EmployeeCost">Employee Cost: @Model.Preview.EmployeeCost</label>
+                    <label asp-for="Preview.EmployeeCost">Employee Cost per Paycheck: @string.Format("{0:C}", @Model.Preview.EmployeeCost)</label>
                 </div>
             </div>
             <div class="control-group form-group">
                 <div class="controls">
-                    <label asp-for="Preview.DependentCost">Dependent Cost: @Model.Preview.DependentCost</label>
+                    <label asp-for="Preview.DependentCost">Dependent Cost per Paycheck: @string.Format("{0:C}", @Model.Preview.DependentCost)</label>
                 </div>
             </div>
             <div class="control-group form-group">
                 <div class="controls">
-                    <label asp-for="Preview.TotalCost">Final Cost: @Model.Preview.TotalCost</label>
+                    <label asp-for="Preview.TotalCost">Final Cost per Paycheck: @string.Format("{0:C}", @Model.Preview.TotalCost)</label>
                 </div>
             </div>
         </div>
