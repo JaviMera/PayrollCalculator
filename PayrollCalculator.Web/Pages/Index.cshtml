@@ -4,7 +4,42 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <h1 class="mt-4 mb-3">
+        Employee Information
+    </h1>
+    <div class="row">
+        <div class="col-md-8 mb-4">
+            <br />
+            <form asp-page="Index" method="post" name="employeeInformation" id="employeeForm">
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label asp-for="Employee.Name">Name:</label>
+                        <input asp-for="Employee.Name" class="form-control" />
+                    </div>
+                </div>
+                <br />
+                <h2 class="mt-4 mb-3">Dependents</h2>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label asp-for="Employee.SpouseName">Spouse Name:</label>
+                        <input asp-for="Employee.SpouseName" class="form-control" />
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label asp-for="Employee.ChildOne">Child:</label>
+                        <input asp-for="Employee.ChildOne" class="form-control" />
+                    </div>
+                </div>
+                <div class="control-group form-group">
+                    <div class="controls">
+                        <label asp-for="Employee.ChildTwo">Child:</label>
+                        <input asp-for="Employee.ChildTwo" class="form-control" />
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-dark" id="previewEmployeeCosts">Preview Costs</button>
+            </form>
+        </div>
+    </div>
 </div>
