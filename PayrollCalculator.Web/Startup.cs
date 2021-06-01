@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PayrollCalculator.Data;
 using PayrollCalculator.Services;
 
 namespace PayrollCalculator.Web
@@ -21,14 +22,17 @@ namespace PayrollCalculator.Web
         {
             services.AddRazorPages();
             services.AddScoped<IPayrollCalculatorService, PayrollCalculatorService>();
+            services.AddDbContext<PayrollCalculatorDbContext>();
+            services.AddScoped<PayrollCalculatorDbSeeder>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, PayrollCalculatorDbSeeder payrollCalculatorDbSeeder)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                payrollCalculatorDbSeeder.Seed();
             }
             else
             {

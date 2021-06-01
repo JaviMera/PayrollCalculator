@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PayrollCalculator.Data\PayrollCalculator.Data.csproj" />
     <ProjectReference Include="..\PayrollCalculator.Services\PayrollCalculator.Services.csproj" />
   </ItemGroup>
 

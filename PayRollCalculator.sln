@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayrollCalculator.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PayrollCalculator.Web", "PayrollCalculator.Web\PayrollCalculator.Web.csproj", "{3A7A533A-46A3-46C8-B746-43F714F627A3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayrollCalculator.Data", "PayrollCalculator.Data\PayrollCalculator.Data.csproj", "{7EBC7C1A-D4F8-4414-BA36-183FD48C641C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3A7A533A-46A3-46C8-B746-43F714F627A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A7A533A-46A3-46C8-B746-43F714F627A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A7A533A-46A3-46C8-B746-43F714F627A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EBC7C1A-D4F8-4414-BA36-183FD48C641C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EBC7C1A-D4F8-4414-BA36-183FD48C641C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EBC7C1A-D4F8-4414-BA36-183FD48C641C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EBC7C1A-D4F8-4414-BA36-183FD48C641C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
