@@ -2,14 +2,23 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PayrollCalculator.Data;
 using PayrollCalculator.Services.Models;
 using PayrollCalculator.Web.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PayrollCalculator.Web.Pages
 {
     public class IndexModel : PageModel
     {
+        private readonly PayrollCalculatorDbContext _context;
+
+        public IndexModel(PayrollCalculatorDbContext context)
+        {
+            _context = context;
+        }
+
         [BindProperty]
         public EmployeeModel Employee { get; set; } = new EmployeeModel();
 
@@ -39,7 +48,19 @@ namespace PayrollCalculator.Web.Pages
                 employee.Dependents.Add(new Dependent { Name = dependent.Name });
             }
 
-            return RedirectToPage("/PreviewCost", new { employeeJson = JsonConvert.SerializeObject(employee) });
+            _context.Employees.Add(new EmployeeEntity
+            {
+                Name = employee.Name,
+                Dependents = employee.Dependents.Select(dependent => new DependentEntity
+                {
+                    Name = dependent.Name,
+                    Type = dependent.Type
+                }).ToList()
+            });
+
+            _context.SaveChanges();
+
+            return RedirectToPage("/PreviewCost", new { employeeId = _context.Employees.OrderByDescending(employee => employee.Id).FirstOrDefault()?.Id });
         }
     }
 }
