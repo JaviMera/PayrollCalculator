@@ -9,12 +9,19 @@ namespace PayrollCalculator.Data
     {
         public DbSet<EmployeeEntity> Employees { get; set; }
         public DbSet<DependentEntity> Dependents { get; set; }
+        public DbSet<PreviewCostEntity> PreviewCosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EmployeeEntity>()
                 .HasMany(employee => employee.Dependents)
-                .WithOne(dependent => dependent.Employee);                
+                .WithOne(dependent => dependent.Employee);
+
+            modelBuilder.Entity<EmployeeEntity>()
+                .HasOne(employee => employee.PreviewCost)
+                .WithOne(previewCost => previewCost.Employee)
+                .HasForeignKey<PreviewCostEntity>(previewCost => previewCost.EmployeeId);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

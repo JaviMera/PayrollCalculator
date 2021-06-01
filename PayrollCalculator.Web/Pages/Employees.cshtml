@@ -1,0 +1,58 @@
+﻿@page
+@model PayrollCalculator.Web.Pages.EmployeesModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mb-4">
+            @for (int i = 0; i < Model.Employees.Count; i++)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">@Model.Employees[i].Name</h2>
+                        <br />
+                        <h3 class="card-subtitle">Dependents</h3>
+                        <br />
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label>Name</label>
+                                    </th>
+                                    <th>
+                                        <label>Type</label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @for (int d = 0; d < Model.Employees[i].Dependents.Count; d++)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label asp-for="Employees[i].Dependents[d].Name">@Model.Employees[i].Dependents[d].Name</label>
+                                        </td>
+                                        <td>
+                                            <label asp-for="Employees[i].Dependents[d].Type">@Model.Employees[i].Dependents[d].Type</label>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <br />
+                        <h3 class="card-subtitle">Preview Cost</h3>
+                        <br />
+                        <div class="card-text">
+                            <label asp-for="Employees[i].PreviewCost.EmployeeCost">Employee Cost per Paycheck: @string.Format("{0:C}", @Model.Employees[i].PreviewCost.EmployeeCost)</label>
+                            <br />
+                            <label asp-for="Employees[i].PreviewCost.DependentCost">Dependent Cost per Paycheck: @string.Format("{0:C}", @Model.Employees[i].PreviewCost.DependentCost)</label>
+                            <br />
+                            <label asp-for="Employees[i].PreviewCost.TotalCost">Final Cost per Paycheck: @string.Format("{0:C}", @Model.Employees[i].PreviewCost.TotalCost)</label>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+    </div>
+</div>

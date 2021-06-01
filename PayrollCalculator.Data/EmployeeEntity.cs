@@ -9,5 +9,7 @@ namespace PayrollCalculator.Data
         public string Name { get; set; }
 
         public List<DependentEntity> Dependents { get; set; }
+
+        public PreviewCostEntity PreviewCost { get; set; }
     }
 }

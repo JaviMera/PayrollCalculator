@@ -14,13 +14,15 @@ namespace PayrollCalculator.Data
 
         public void Seed()
         {
-            if (!_context.Database.CanConnect() || _context.Employees.Any())
+            if (!_context.Database.CanConnect())
             {
                 return;
             }
 
-            _context.Employees.AddRange(new List<EmployeeEntity>
-            {                
+            if (!_context.Employees.Any())
+            {
+                _context.Employees.AddRange(new List<EmployeeEntity>
+            {
                 new EmployeeEntity
                 {
                     Name = "Jack",
@@ -69,7 +71,23 @@ namespace PayrollCalculator.Data
                 }
             });
 
-            _context.SaveChanges();
+                _context.SaveChanges();
+            }
+
+            if (!_context.PreviewCosts.Any())
+            {
+                foreach(var employee in _context.Employees)
+                {
+                    employee.PreviewCost = new PreviewCostEntity
+                    {
+                        EmployeeCost = 10,
+                        DependentCost = 60,
+                        TotalCost = 70
+                    };
+                }
+
+                _context.SaveChanges();
+            }
         }
     }
 }
